@@ -1,5 +1,9 @@
 """fstring_builder.fstring_field"""
-from typing import Optional
+from typing import Optional, Union, TypeVar
+
+from .enums import *
+
+TField = TypeVar("TField", bound="ReplacementField")
 
 
 class ReplacementField:
@@ -17,97 +21,123 @@ class ReplacementField:
     def __init__(
         self,
         name: Optional[str] = None,
-        conversion: Optional[str] = None,
+        conversion: Optional[Union[str, Conversion]] = None,
         fill: Optional[str] = None,
-        align: Optional[str] = None,
-        sign: Optional[str] = None,
+        align: Optional[Union[str, Align]] = None,
+        sign: Optional[Union[str, Sign]] = None,
         z: Optional[bool] = None,
         hashtag: Optional[bool] = None,
         zero: Optional[bool] = None,
         width: Optional[int] = None,
-        grouping: Optional[str] = None,
+        grouping: Optional[Union[str, Grouping]] = None,
         precision: Optional[int] = None,
-        type: Optional[str] = None,
+        type: Optional[Union[str, Type]] = None,
     ):
         """Replacement Field constructor.  Pass in formatting options here, if available"""
 
-        self._name = name
-        self._conversion = conversion
-        self._fill = fill
-        self._align = align
-        self._sign = sign
-        self._z = z
-        self._hashtag = hashtag
-        self._zero = zero
-        self._width = width
-        self._grouping = grouping
-        self._precision = precision
-        self._type = type
+        self._name: Optional[str] = None
+        self._conversion: Optional[Conversion] = None
+        self._fill: Optional[str] = None
+        self._align: Optional[Align] = None
+        self._sign: Optional[Sign] = None
+        self._z: Optional[bool] = None
+        self._hashtag: Optional[bool] = None
+        self._zero: Optional[bool] = None
+        self._width: Optional[int] = None
+        self._grouping: Optional[Grouping] = None
+        self._precision: Optional[int] = None
+        self._type: Optional[Type] = None
 
-    def name(self, name: str) -> "ReplacementField":
+        if name:
+            self.name(name)
+        if conversion:
+            self.conversion(conversion)
+        if fill:
+            self.fill(fill)
+        if align:
+            self.align(align)
+        if sign:
+            self.sign(sign)
+        if z:
+            self.z(z)
+        if hashtag:
+            self.hashtag(hashtag)
+        if zero:
+            self.zero(zero)
+        if width:
+            self.width(width)
+        if grouping:
+            self.grouping(grouping)
+        if precision:
+            self.precision(precision)
+        if type:
+            self.type(type)
+
+    def name(self: TField, name: str) -> TField:
         """Chainable function to set the field `name`"""
         self._name = name
         return self
 
-    def conversion(self, conversion: str) -> "ReplacementField":
+    def conversion(self: TField, conversion: Union[str, Conversion]) -> TField:
         """Chainable function to set the field `conversion`"""
-        self._conversion = conversion
+
+        self._conversion = Conversion(conversion)
         return self
 
-    def fill(self, fill: str) -> "ReplacementField":
+    def fill(self: TField, fill: str) -> TField:
         """Chainable function to set the field `fill`"""
         self._fill = fill
         return self
 
-    def align(self, align: str) -> "ReplacementField":
+    def align(self: TField, align: Union[str, Align]) -> TField:
         """Chainable function to set the field `align`"""
-        self._align = align
+        self._align = Align(align)
         return self
 
-    def sign(self, sign: str) -> "ReplacementField":
+    def sign(self: TField, sign: Union[str, Sign]) -> TField:
         """Chainable function to set the field `sign`"""
-        self._sign = sign
+        self._sign = Sign(sign)
         return self
 
-    def z(self, z: bool) -> "ReplacementField":
+    def z(self: TField, z: bool) -> TField:
         """Chainable function to set the field `z`"""
         self._z = z
         return self
 
-    def hashtag(self, hashtag: bool) -> "ReplacementField":
+    def hashtag(self: TField, hashtag: bool) -> TField:
         """Chainable function to set the field `hashtag`"""
         self._hashtag = hashtag
         return self
 
-    def zero(self, zero: bool) -> "ReplacementField":
+    def zero(self: TField, zero: bool) -> TField:
         """Chainable function to set the field `zero`"""
         self._zero = zero
         return self
 
-    def width(self, width: int) -> "ReplacementField":
+    def width(self: TField, width: int) -> TField:
         """Chainable function to set the field `width`"""
         self._width = width
         return self
 
-    def grouping(self, grouping: str) -> "ReplacementField":
+    def grouping(self: TField, grouping: Union[str, Grouping]) -> TField:
         """Chainable function to set the field `grouping`"""
-        self._grouping = grouping
+        self._grouping = Grouping(grouping)
         return self
 
-    def precision(self, precision: int) -> "ReplacementField":
+    def precision(self: TField, precision: int) -> TField:
         """Chainable function to set the field `precision`"""
         self._precision = precision
         return self
 
-    def type(self, type: str) -> "ReplacementField":
+    def type(self: TField, type: Union[str, Type]) -> TField:
         """Chainable function to set the field `type`"""
-        self._type = type
+        self._type = Type(type)
         return self
 
     def build_format_spec(self) -> str:
         """Build the format spec field."""
 
-        return f"{self._fill or ''}{self._align or ''}{self._sign or ''}{'z' if self._z else ''}{'#' if self._hashtag else ''}{'0' if self._zero else ''}{self._width or ''}{self._grouping or ''}{'.{}'.format(self._precision) if self._precision is not None else ''}{self._type or ''}"  # noqa: E501
+        return f"{self._fill or ''}{self._align.value if self._align else ''}{self._sign.value if self._sign else ''}{'z' if self._z else ''}{'#' if self._hashtag else ''}{'0' if self._zero else ''}{self._width or ''}{self._grouping.value if self._grouping else ''}{'.{}'.format(self._precision) if self._precision is not None else ''}{self._type.value if self._type else ''}"  # noqa: E501
 
     def build(self) -> str:
         """Build the format ready string"""
@@ -115,7 +145,7 @@ class ReplacementField:
         format_spec = self.build_format_spec()
         format_spec = ":{}".format(format_spec) if format_spec else ""
         conversion = (
-            "!{}".format(self._conversion) if self._conversion is not None else ""
+            "!{}".format(self._conversion.value) if self._conversion is not None else ""
         )
 
         return f"{{{self._name or ''}{conversion}{format_spec}}}"
