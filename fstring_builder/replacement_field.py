@@ -1,7 +1,7 @@
 """fstring_builder.fstring_field"""
 from typing import Optional, Union, TypeVar
 
-from .enums import *
+from .enums import Conversion, Sign, Align, Grouping, Type
 
 TField = TypeVar("TField", bound="ReplacementField")
 
