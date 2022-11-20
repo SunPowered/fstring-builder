@@ -1,5 +1,6 @@
 """fstring_builder.fstring"""
 from typing import Union
+
 from .replacement_field import ReplacementField
 
 

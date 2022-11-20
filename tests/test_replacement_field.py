@@ -1,6 +1,6 @@
 import pytest
 from fstring_builder.replacement_field import ReplacementField
-from fstring_builder.enums import *
+from fstring_builder.enums import Align, Grouping
 
 
 def test_replacement_field_constructor():
