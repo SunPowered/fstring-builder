@@ -47,10 +47,15 @@ class ReplacementField:
     def build_format_spec(self) -> str:
         """Build the format spec field."""
 
-        return f"{self.fill or ''}{self.align or ''}{self.sign or ''}{'z' if self.z else ''}{'#' if self.hashtag else ''}{'0' if self.zero else ''}{self.width or ''}{self.grouping or ''}{'.{}'.format(self.precision) if self.precision is not None else ''}{self.type or ''}"
+        return f"{self.fill or ''}{self.align or ''}{self.sign or ''}{'z' if self.z else ''}{'#' if self.hashtag else ''}{'0' if self.zero else ''}{self.width or ''}{self.grouping or ''}{'.{}'.format(self.precision) if self.precision is not None else ''}{self.type or ''}"  # noqa: E501
 
     def build(self) -> str:
         """Build the format ready string"""
 
         format_spec = self.build_format_spec()
-        return f"{{{self.name or ''}{'!{}'.format(self.conversion) if self.conversion is not None else ''}{':{}'.format(format_spec) if format_spec else ''}}}"
+        format_spec = ":{}".format(format_spec) if format_spec else ""
+        conversion = (
+            "!{}".format(self.conversion) if self.conversion is not None else ""
+        )
+
+        return f"{{{self.name or ''}{conversion}{format_spec}}}"

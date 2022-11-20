@@ -8,6 +8,7 @@ packages = [{include = "fstring_builder"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+flake8 = "^5.0.4"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^0.991"
