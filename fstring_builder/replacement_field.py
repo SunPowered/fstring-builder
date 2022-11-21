@@ -76,17 +76,17 @@ class ReplacementField:
         self._sign = Sign(sign)
         return self
 
-    def z(self: TField, z: bool) -> TField:
+    def z(self: TField, z: bool = True) -> TField:
         """Chainable function to set the field `z`"""
         self._z = z
         return self
 
-    def hashtag(self: TField, hashtag: bool) -> TField:
+    def hashtag(self: TField, hashtag: bool = True) -> TField:
         """Chainable function to set the field `hashtag`"""
         self._hashtag = hashtag
         return self
 
-    def zero(self: TField, zero: bool) -> TField:
+    def zero(self: TField, zero: bool = True) -> TField:
         """Chainable function to set the field `zero`"""
         self._zero = zero
         return self
