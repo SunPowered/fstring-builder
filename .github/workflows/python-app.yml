@@ -39,4 +39,4 @@ jobs:
         mypy fstring_builder
     - name: Test with pytest
       run: |
-        pytest
+        pytest --cov fstring_builder --cov-report term-missing
