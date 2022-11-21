@@ -1,6 +1,6 @@
 import pytest
 from fstring_builder.replacement_field import ReplacementField
-from fstring_builder.enums import Align, Grouping
+from fstring_builder.enums import Align, Grouping, Conversion
 
 
 def test_replacement_field_constructor():
@@ -60,3 +60,18 @@ def test_fields_for_coverage():
 
     expected = "{!s:-z#0}"
     assert rfield.build() == expected
+
+    rfield = (
+        ReplacementField()
+        .name("value")
+        .conversion(Conversion.ASCII)
+        .fill("*")
+        .sign("-")
+        .z()
+        .hashtag()
+        .zero()
+        .precision(1)
+        .type("n")
+    )
+
+    rfield.build()

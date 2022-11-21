@@ -25,9 +25,9 @@ class ReplacementField:
         fill: Optional[str] = None,
         align: Optional[Union[str, Align]] = None,
         sign: Optional[Union[str, Sign]] = None,
-        z: Optional[bool] = None,
-        hashtag: Optional[bool] = None,
-        zero: Optional[bool] = None,
+        z: bool = False,
+        hashtag: bool = False,
+        zero: bool = False,
         width: Optional[int] = None,
         grouping: Optional[Union[str, Grouping]] = None,
         precision: Optional[int] = None,
@@ -35,43 +35,20 @@ class ReplacementField:
     ):
         """Replacement Field constructor.  Pass in formatting options here, if available"""
 
-        self._name: Optional[str] = None
-        self._conversion: Optional[Conversion] = None
-        self._fill: Optional[str] = None
-        self._align: Optional[Align] = None
-        self._sign: Optional[Sign] = None
-        self._z: Optional[bool] = None
-        self._hashtag: Optional[bool] = None
-        self._zero: Optional[bool] = None
-        self._width: Optional[int] = None
-        self._grouping: Optional[Grouping] = None
-        self._precision: Optional[int] = None
-        self._type: Optional[Type] = None
-
-        if name:
-            self.name(name)
-        if conversion:
-            self.conversion(conversion)
-        if fill:
-            self.fill(fill)
-        if align:
-            self.align(align)
-        if sign:
-            self.sign(sign)
-        if z:
-            self.z(z)
-        if hashtag:
-            self.hashtag(hashtag)
-        if zero:
-            self.zero(zero)
-        if width:
-            self.width(width)
-        if grouping:
-            self.grouping(grouping)
-        if precision:
-            self.precision(precision)
-        if type:
-            self.type(type)
+        self._name: Optional[str] = name
+        self._conversion: Optional[Conversion] = (
+            Conversion(conversion) if conversion else None
+        )
+        self._fill: Optional[str] = fill
+        self._align: Optional[Align] = Align(align) if align else None
+        self._sign: Optional[Sign] = Sign(sign) if sign else None
+        self._z: bool = z
+        self._hashtag: bool = hashtag
+        self._zero: bool = zero
+        self._width: Optional[int] = width
+        self._grouping: Optional[Grouping] = Grouping(grouping) if grouping else None
+        self._precision: Optional[int] = precision
+        self._type: Optional[Type] = Type(type) if type else None
 
     def name(self: TField, name: str) -> TField:
         """Chainable function to set the field `name`"""
@@ -99,17 +76,17 @@ class ReplacementField:
         self._sign = Sign(sign)
         return self
 
-    def z(self: TField, z: bool) -> TField:
+    def z(self: TField, z: bool = True) -> TField:
         """Chainable function to set the field `z`"""
         self._z = z
         return self
 
-    def hashtag(self: TField, hashtag: bool) -> TField:
+    def hashtag(self: TField, hashtag: bool = True) -> TField:
         """Chainable function to set the field `hashtag`"""
         self._hashtag = hashtag
         return self
 
-    def zero(self: TField, zero: bool) -> TField:
+    def zero(self: TField, zero: bool = True) -> TField:
         """Chainable function to set the field `zero`"""
         self._zero = zero
         return self
