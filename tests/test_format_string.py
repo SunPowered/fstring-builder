@@ -24,3 +24,15 @@ def test_format_string(currency):
     fstr.add("| _column_ ")
 
     assert fstr.format(qty=val) == "$______13,523.50| _column_ "
+
+
+def test_format_string_own_types():
+    """Make sure FormatString can accept other FormatStrings"""
+
+    fstr1 = FormatString(
+        "Item:", ReplacementField(name="item", type="d", width=13, zero=True)
+    )
+
+    fstr2 = FormatString("---", fstr1, "---")
+
+    assert fstr2.format(item=42).startswith("---")
