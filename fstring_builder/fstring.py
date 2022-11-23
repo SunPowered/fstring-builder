@@ -3,6 +3,8 @@ from typing import Union
 
 from .replacement_field import ReplacementField
 
+FStringLike = Union[str, ReplacementField, "FormatString"]
+
 
 class FormatString:
     """
@@ -11,9 +13,9 @@ class FormatString:
     This collects strings and `ReplacementField` instances to construct a buildable format string
     """
 
-    def __init__(self, *args: Union[str, ReplacementField]):
+    def __init__(self, *args: FStringLike):
         """FString constructor.  Acceps a list of `str` or `ReplacementField` items"""
-        self._items: list[Union[str, ReplacementField]] = list(args) or []
+        self._items: list[FStringLike] = list(args) or []
 
     def build(self, join_with: str = "") -> str:
         """
@@ -22,7 +24,7 @@ class FormatString:
         Accepts an optional `join_with` argument expecting a string to join all elements
         """
         return join_with.join(
-            item.build() if isinstance(item, ReplacementField) else item
+            item.build() if isinstance(item, (ReplacementField, FormatString)) else item
             for item in self._items
         )
 
