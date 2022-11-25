@@ -17,6 +17,10 @@ class FormatString:
         """FString constructor.  Acceps a list of `str` or `ReplacementField` items"""
         self._items: list[FStringLike] = list(args) or []
 
+    def __add__(self, other: FStringLike) -> "FormatString":
+        self.add(other)
+        return self
+
     def build(self, join_with: str = "") -> str:
         """
         Returns a format ready string from all stored items.
@@ -32,6 +36,6 @@ class FormatString:
         """Build and format an FormatString"""
         return self.build().format(*args, **kwargs)
 
-    def add(self, item: Union[str, ReplacementField]):
+    def add(self, item: FStringLike):
         """Add a new item to the FormatString"""
         self._items.append(item)
