@@ -36,3 +36,22 @@ def test_format_string_own_types():
     fstr2 = FormatString("---", fstr1, "---")
 
     assert fstr2.format(item=42).startswith("---")
+
+
+def test_format_string_concatenation():
+    """Test the + operator with FormatStrings"""
+
+    fstr1 = FormatString(
+        "**", ReplacementField(name="first_name", fill="-", align=">", width=10)
+    )
+    fstr2 = FormatString(
+        ReplacementField(name="last_name", align="<", width=15, fill="-"), "**"
+    )
+
+    fconcat = fstr1 + " " + fstr2
+
+    assert isinstance(fconcat, FormatString)
+    assert (
+        fconcat.format(first_name="Fred", last_name="Rogers")
+        == "**------Fred Rogers---------**"
+    )

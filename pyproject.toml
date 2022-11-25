@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fstring-builder"
-version = "0.1.2"
+version = "0.2.0"
 description = "A human friendly format string builder"
 authors = ["Tim van Boxtel <tim@vanboxtel.ca>"]
 readme = "README.md"
